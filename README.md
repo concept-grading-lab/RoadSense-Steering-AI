@@ -19,11 +19,7 @@ The underlying idea of end-to-end steering prediction is established research, n
 - Bojarski et al. (2016), [End to End Learning for Self-Driving Cars](https://arxiv.org/abs/1604.07316).
 - [Sully Chen — driving datasets](https://github.com/SullyChen/driving-datasets).
 
-The reference repository has an MIT licence, but no source files from it are
-incorporated here. If you later copy any of its code, preserve the required
-copyright and permission notices. Add **your own** licence once you choose its
-terms; the user of this starter is responsible for checking any chosen data,
-assets, and models before redistribution.
+The reference repository has an MIT licence, but no source files from it are incorporated here.
 
 ## Roadmap
 
