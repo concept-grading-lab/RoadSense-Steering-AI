@@ -83,10 +83,3 @@ The underlying idea of end-to-end steering prediction is established research, n
 
 The reference repository has an MIT licence, but no source files from it are incorporated here.
 
-## Roadmap
-
-- Add a numerical ground-truth comparison dashboard.
-- Train on additional approved datasets and report per-domain metrics.
-- Add uncertainty / out-of-distribution warnings.
-- Record a short example video of the model operating on offline footage.
-- Use a driving simulator to examine closed-loop behaviour (not a real vehicle).
