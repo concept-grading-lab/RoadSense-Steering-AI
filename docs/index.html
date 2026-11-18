@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#07131d"/>
+<meta name="description" content="RoadSense: interactive self-driving car simulation and independently implemented computer-vision steering demonstration."/>
+<title>RoadSense — Watch the car drive</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="ambient" aria-hidden="true"></div>
+<div class="page">
+<header class="header">
+  <a class="logo" href="./" aria-label="RoadSense home"><span class="symbol">↗</span><span>Road<span class="brand-em">Sense</span><span class="brand-dot">.</span></span></a>
+  <nav aria-label="Main navigation"><a href="#demo">Live demo</a><a href="#vision">Computer vision</a><a href="#details">About</a></nav>
+  <a class="repo-link" href="https://github.com/concept-grading-lab/RoadSense-Steering-AI" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .7A11.3 11.3 0 0 0 8.4 22.73c.57.1.77-.24.77-.55v-2c-3.14.69-3.8-1.33-3.8-1.33-.51-1.29-1.26-1.63-1.26-1.63-1.02-.69.08-.68.08-.68 1.13.08 1.73 1.15 1.73 1.15 1 .1.84 1.92.63 2.39-.42.1-.73.26-.98.44 2.52.29 5.17-1.26 5.17-5.6 0-1.24-.44-2.26-1.16-3.06.12-.28.51-1.44-.11-3.01 0 0-.95-.31-3.1 1.17A10.75 10.75 0 0 0 12 6.56c-.96 0-1.92.13-2.82.38-2.16-1.48-3.11-1.17-3.11-1.17-.61 1.57-.23 2.73-.11 3.01a4.4 4.4 0 0 0-1.17 3.06c0 4.33 2.65 5.9 5.16 5.61-.1.09-.19.19-.27.3a3.1 3.1 0 0 1-.29 2.07v2.36c0 .31.2.65.78.54A11.3 11.3 0 0 0 12 .7Z"/></svg><span>View source</span></a>
+</header>
+<main>
+  <section class="hero" id="demo">
+    <div class="eyebrow"><span class="pulse"></span> INTERACTIVE AUTONOMOUS-DRIVING LAB <span class="eyebrow-rule"></span> 100% BROWSER BASED</div>
+    <h1>Watch the car <em>drive.</em><br/>See every <span class="highlight">decision.</span></h1>
+    <p>Experience a moving-car simulation, steer it yourself, and inspect the steering predictions from an independently built computer-vision pipeline.</p>
+    <div class="chips"><span><b class="chip-dot"></b> Animated simulation</span><span>Real-time steering</span><span>No installation needed</span></div>
+  </section>
+  <section class="workspace" aria-label="Interactive driving demonstration">
+    <div class="screen-card">
+      <div class="screen-toolbar"><div class="mode-switch" role="group" aria-label="Choose the demonstration mode"><button id="btnSim" class="mode-btn active" type="button" aria-pressed="true"><span class="circle">●</span> Driving simulation</button><button id="btnVideo" class="mode-btn" type="button" aria-pressed="false">◉ Vision replay</button></div><span id="liveBadge" class="status"><span class="status-dot"></span> RUNNING</span></div>
+      <div class="viewport">
+        <canvas id="road" width="1080" height="620" role="img" aria-label="Animated simulated car driving along a curving road with moving scenery">Your browser does not support Canvas.</canvas>
+        <video id="processedVideo" src="road-annotated.mp4" poster="road-straight.jpg" muted playsinline loop preload="metadata" aria-label="Eight second recording of processed synthetic road footage" hidden></video>
+        <div class="cam-label" id="camLabel"><span class="cam-dot"></span> CHASE CAMERA <span class="camera-divider">/</span> SIMULATION</div>
+        <div class="frame-label" id="frameLabel">TRACK 01 · COASTAL BENDS</div>
+        <div class="bottom-viz"><div class="speed-text" id="speedFloat">54 <span>km/h</span></div><div class="video-notice" id="videoNotice" hidden>Recorded OpenCV output · Synthetic footage</div></div>
+      </div>
+      <div class="screen-controls" id="simulationControls"><button class="primary" type="button" id="playPause"><span id="playGlyph">Ⅱ</span><span id="playText">Pause drive</span></button><button class="outline" type="button" id="restart" aria-label="Restart simulation" title="Restart drive">↺ Reset</button><span class="ctrl-divider"></span><label for="trackSelect">Route</label><select id="trackSelect" aria-label="Driving route"><option value="coastal">Coastal bends</option><option value="sweeps">Mountain sweeps</option><option value="straight">City straight</option></select><span class="ctrl-spacer"></span><label class="keyboard" for="speedSlider">Speed</label><input id="speedSlider" type="range" min="25" max="90" step="1" value="54" aria-label="Simulated speed in kilometres per hour"/><output id="speedValue" for="speedSlider">54 km/h</output></div>
+      <div class="screen-controls replay-controls" id="replayControls" hidden><button id="videoPlay" class="primary" type="button">▶ Play replay</button><label for="seek" class="keyboard">Timeline</label><input id="seek" type="range" min="0" max="159" value="0" step="1" aria-label="Replay frame"/><span id="videoTime" class="time">0:00 / 0:08</span></div>
+    </div>
+    <aside class="telemetry" aria-label="Driving dashboard">
+      <div class="telemetry-top"><div><div class="small-label">DRIVE TELEMETRY</div><div class="dash-heading">Steering monitor</div></div><span class="telemetry-signal" title="Simulation connected"><span></span>ACTIVE</span></div>
+      <div class="angle-group"><div class="small-label" id="angleLabel">SIMULATED STEERING ANGLE</div><div class="angle-value"><strong id="steerAngle">+0.0</strong><span>°</span></div><div class="direction"><span class="direction-arrow" id="directionArrow">↑</span><span id="steerDirection">Following road centre</span></div></div>
+      <div class="wheel-panel"><svg class="wheel-icon" id="steeringWheel" viewBox="0 0 130 130" role="img" aria-label="Steering wheel angle indicator"><circle cx="65" cy="65" r="51" fill="none" stroke="#d1e7ea" stroke-width="11"/><circle cx="65" cy="65" r="49" fill="none" stroke="#647785" stroke-width="2"/><path d="M20 49 L57 66 M110 49 L73 66 M65 65 L65 108" stroke="#d1e7ea" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="65" cy="65" r="15" fill="#67efd2" stroke="#2d6c69" stroke-width="4"/></svg><div class="wheel-caption">Live steering indicator</div></div>
+      <div class="metrics"><div><span>TRAVELLED</span><strong id="distance">0.00 <small>km</small></strong></div><div><span>VELOCITY</span><strong id="velocity">54 <small>km/h</small></strong></div></div>
+      <div class="autopilot-row"><div><strong>Auto-follow</strong><small id="driveModeInfo">Visual route-following controller</small></div><label class="switch" for="autopilot"><input id="autopilot" type="checkbox" checked/><span class="switch-slider"></span></label></div>
+      <p class="hint" id="controlsHint">Switch off Auto-follow and use <kbd>←</kbd> <kbd>→</kbd> to steer.</p>
+      <div class="accuracy-note"><span class="info-icon">i</span><span><strong id="disclaimerTitle">Simulation only — not AI driving.</strong><br/><span id="disclaimerBody">The animated car uses a simple route-following controller. It does not execute a trained neural network.</span></span></div>
+    </aside>
+  </section>
+  <section class="under" id="vision"><div class="under-copy"><div class="eyebrow second">COMPUTER VISION DEMO</div><h2>From camera frames<br/>to steering angles.</h2><p>The companion Python pipeline processes road images and produces a steering estimate. The eight-second replay shows <b>160 actual processed frames</b> from synthetic test footage, with no prewritten steering sequence.</p><div class="under-actions"><button id="openReplay" class="cta" type="button">Watch the vision replay <span>↗</span></button><a class="under-link" href="vision-replay.html">Open detailed analysis →</a></div></div><div class="preview"><img src="road-right.jpg" alt="Annotated right-turn road showing computed lane geometry" loading="lazy"/><div class="preview-overlay">OPEN CV / PROCESSED FRAME</div></div></section>
+  <section class="grid-features" id="details"><div class="feature"><span class="feature-icon">▧</span><h3>Live browser simulation</h3><p>An original Canvas animation with a moving road, an illustrated vehicle, selectable tracks and manual steering.</p></div><div class="feature"><span class="feature-icon">◎</span><h3>Computer-vision pipeline</h3><p>OpenCV lane-geometry baseline plus a separate PyTorch/ONNX training and inference pipeline.</p></div><div class="feature"><span class="feature-icon">⌘</span><h3>Built from scratch</h3><p>Standalone source and publishing structure for your GitHub repository, without forking the reference project.</p></div></section>
+</main>
+<footer><span><strong>RoadSense.</strong> Educational autonomous-driving visualisation · Not for use with real vehicles.</span><span><a href="https://github.com/adityaguptai/Self-Driving-Car-" target="_blank" rel="noopener">Reference project</a> · <a href="https://arxiv.org/abs/1604.07316" target="_blank" rel="noopener">DAVE-2 research</a></span></footer>
+</div><script id="angle-trace" type="application/json">[-3.289,-3.448,-2.021,-3.322,-2.005,-3.181,-3.342,-1.955,-6.264,-1.42,-5.593,-4.56,-5.685,-5.137,-8.706,-8.303,-5.703,-8.399,-7.998,-6.281,-7.37,-7.178,-5.379,-5.327,-6.133,-5.997,-5.505,-5.484,-4.789,-4.282,-3.949,-3.749,-3.287,-3.058,-2.375,-2.093,-1.738,-1.28,-0.876,-0.491,-0.027,0.203,0.721,1.049,1.737,1.919,2.12,2.526,3.338,3.542,3.702,4.257,4.687,5.372,5.331,5.741,6.041,6.471,6.591,7.02,7.209,7.609,7.703,8.125,8.17,8.197,3.662,4.334,2.307,3.475,2.509,3.13,3.423,6.331,2.402,0.572,3.761,1.882,2.01,3.168,2.021,1.243,1.975,2.357,-0.107,2.755,1.611,6.652,2.676,5.358,6.618,5.901,5.858,4.528,8.657,8.647,6.025,8.215,7.95,7.569,7.466,6.949,6.809,6.415,5.901,5.707,5.597,5.046,4.749,4.333,3.709,3.504,3.245,3.027,2.34,1.787,1.787,1.109,0.909,0.172,-0.159,-0.529,-0.755,-1.208,-1.759,-2.093,-2.608,-3.083,-3.235,-3.997,-3.956,-4.379,-4.936,-5.328,-5.661,-5.919,-6.17,-6.521,-6.763,-6.356,-6.411,-6.256,-7.055,-4.171,-8.402,-8.603,-5.631,-4.277,-6.135,-4.048,-5.809,-4.464,-5.153,-5.471,-3.669,-4.773,-1.902,-0.853,-3.124,-0.618]</script><script src="sim.js" defer></script>
+</body></html>

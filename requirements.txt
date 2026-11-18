@@ -1,0 +1,5 @@
+gradio>=5.0,<7.0
+numpy>=1.26,<3
+pillow>=10,<13
+opencv-python-headless>=4.9,<5
+onnxruntime>=1.18,<2
